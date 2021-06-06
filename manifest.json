@@ -1,0 +1,20 @@
+
+{"manifest_version": 3,
+"name": "Cheat Together",
+"version": "1.0",
+"description": "Enables to colaboratively fill answers",
+"permissions": [
+    "contextMenus",
+    "tabs","storage", "activeTab", "scripting"
+],
+
+"icons": {
+    "16": "images/icon16.png",
+    "32": "images/icon32.png",
+    "48": "images/icon48.png",
+    "128":"images/icon48.png"
+   },
+   "action": {
+    "default_popup": "popup.html"
+  }
+}
