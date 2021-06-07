@@ -21,6 +21,13 @@ if(typeof extract != 'function'){
             s.push({'qtext':ques,'qid':qid, 'ans':option})
         }
         console.log(s)
+        if(s.length!=0){
+            dsp=document.getElementById('statusdisp').innerText
+            document.getElementById('statusdisp').innerText="";
+            s[0].testname=document.getElementById('statusdisp').parentElement.innerText.trim();
+            document.getElementById('statusdisp').innerText=dsp;
+        
+        }
         return s
     }
 }
