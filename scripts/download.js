@@ -10,7 +10,7 @@ if(typeof autofill != 'function'){
         for( q of ansOBJ){
             ans = document.getElementsByName(q.qid)
             for( a of ans){
-                if(a.value==q.ans){
+                if(a.value.replace(/ /g,"")==q.ans.replace(/ /g,"")){
                     a.click()
                     a.checked=true
                     
