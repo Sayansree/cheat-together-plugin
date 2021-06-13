@@ -1,13 +1,31 @@
 
 {"manifest_version": 3,
 "name": "Cheat Together",
-"version": "1.0",
+"version": "1.6",
 "description": "Enables to colaboratively fill answers",
 "permissions": [
     "contextMenus",
-    "tabs","storage", "activeTab", "scripting"
+    "tabs","storage", "activeTab", "scripting",
+    "webRequest"
 ],
-
+"host_permissions": [
+  "https://teams.microsoft.com/*","https://forms.office.com/*"
+],
+"content_scripts": [
+  {
+    "matches": ["https://teams.microsoft.com/*"],
+    "run_at": "document_start",
+    "js": ["injector.js"]
+  }
+],
+"web_accessible_resources": [{
+  "resources" : ["scripts/inject.js"],
+  "matches" : ["https://teams.microsoft.com/*","https://assignments.onenote.com/*","https://forms.office.com/*"]
+}
+],
+"background":{
+  "service_worker":"background.js"
+},
 "icons": {
     "16": "images/icon16.png",
     "32": "images/icon32.png",

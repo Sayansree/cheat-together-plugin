@@ -6,9 +6,25 @@ button {
     border: none;
     border-radius: 2px;
     background-color:rgba(169, 169, 169, 0.24);
+    color: #808080;
   }
   
   button.current {
     box-shadow: 0 0 0 2px white,
                 0 0 0 4px black;
+  }
+  button:hover {
+    background-color: darkgray;
+    color: #22272b;
+  }
+  input{
+    width :100px;
+    border-radius: 5px;
+  }
+  body {
+    width: 300px;
+    background: #22272b;
+  }
+  p{
+    text-align: center;
   }
