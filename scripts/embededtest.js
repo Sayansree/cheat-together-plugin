@@ -8,7 +8,7 @@ if(typeof checkembeded != 'function'){
     window.checkembeded= () =>{
         if(window.location.href.split('?')[0]=='https://forms.office.com/Pages/ResponsePage.aspx'){
             let k=document.getElementsByClassName("office-form-title heading-1")
-            if(k)
+            if(k.length!=0)
              k=k[0].getElementsByTagName('span')[0]
             else
              return

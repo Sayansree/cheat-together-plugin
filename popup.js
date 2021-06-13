@@ -8,7 +8,7 @@ let up = document.getElementById("up");
 let down = document.getElementById("down");
 let rst = document.getElementById("rst");
 let v = document.getElementById("version-info");
-
+const version=1.6
 up.addEventListener("click", async () => {
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     
@@ -27,7 +27,11 @@ up.addEventListener("click", async () => {
   });
   rst.addEventListener("click", async () => {
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, {type: "getCount"}, function(count) {
+          console.log("got")
+      });
+  });
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
       files: ['scripts/reset.js'],
@@ -35,6 +39,8 @@ up.addEventListener("click", async () => {
   });
   window.onload= async()=>{
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    v.innerText=`checking for updates ...`
+              v.style.color='blue'
     fetch('https://cheat-together.herokuapp.com/stats',
     {
         method:'get',
@@ -43,17 +49,17 @@ up.addEventListener("click", async () => {
     }
     ).then((resp)=>resp.json())
     .then((resp)=>{
-            if(v.innerText<resp.latestVersion){
-              v.innerText=`newer version of Cheat Together Plugin is available
-              <a href="https://cheat-together.herokuapp.com/plugin">upgrade from v${resp.latestVersion} to v${v.innerText}</a>`
+            if(version<resp.latestVersion){
+              v.innerHTML=`newer version of this Plugin is available
+              <a href="https://cheat-together.herokuapp.com/plugin">upgrade from v${resp.latestVersion} to v${version}</a>`
               v.style.color='yellow'
             }else{
-              v.innerText=`You are using latest version of Cheat Together Plugin v${v.innerText}`
+              v.innerText=`You are using latest version of Cheat Together Plugin v${version}`
               v.style.color='green'
             }
         })
     .catch(()=>{ 
-        v.innerText=`unable to establish connection with Cheat Together Server, CONNECTION FAILED`
+        v.innerText=`unable to establish connection with Server, CONNECTION FAILED`
         v.style.color='red'
     })
     chrome.scripting.executeScript({
