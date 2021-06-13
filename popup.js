@@ -35,7 +35,7 @@ up.addEventListener("click", async () => {
   });
   window.onload= async()=>{
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    fetch('https://oversmart-counter.herokuapp.com/stats',
+    fetch('https://cheat-together.herokuapp.com/stats',
     {
         method:'get',
         mode:'cors',
@@ -45,7 +45,7 @@ up.addEventListener("click", async () => {
     .then((resp)=>{
             if(v.innerText<resp.latestVersion){
               v.innerText=`newer version of Cheat Together Plugin is available
-              <a href="https://oversmart-counter.herokuapp.com/plugin">upgrade from v${resp.latestVersion} to v${v.innerText}</a>`
+              <a href="https://cheat-together.herokuapp.com/plugin">upgrade from v${resp.latestVersion} to v${v.innerText}</a>`
               v.style.color='yellow'
             }else{
               v.innerText=`You are using latest version of Cheat Together Plugin v${v.innerText}`
