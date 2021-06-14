@@ -13,7 +13,7 @@ let tstlnk = document.getElementById("test-link");
 let solve = document.getElementById("solve");
 let pass=document.getElementById('pass')
 
-const version=1.6
+const version=1.7
 var state=false
 solve.addEventListener("click", async () =>chrome.tabs.create({url:`https://cheat-together.herokuapp.com/test/${tstlnk.value}`}));
 up.addEventListener("click", async () => {  
