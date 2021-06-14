@@ -15,7 +15,7 @@
   {
     "matches": ["https://teams.microsoft.com/*"],
     "run_at": "document_start",
-    "js": ["injector.js","background.js"]
+    "js": ["injector.js"]
   }
 ],
 "web_accessible_resources": [{
