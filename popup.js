@@ -8,6 +8,7 @@ let up = document.getElementById("up");
 let down = document.getElementById("down");
 let rst = document.getElementById("rst");
 let v = document.getElementById("version-info");
+let actionInfo = document.getElementById("action-info");
 let tstlnk = document.getElementById("test-link");
 let solve = document.getElementById("solve");
 
@@ -23,19 +24,42 @@ up.addEventListener("click", async () => {
   });
   down.addEventListener("click", async () => {
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      files: ['scripts/download.js'],
+      files: ['scripts/autofill.js'],
     });
+    actionInfo.innerText=`requesting answers ...`
+    actionInfo.style.color='blue'
+    fetch(`https://cheat-together.herokuapp.com/download/${tstlnk.value}`,
+        {
+            method:'get',
+            mode:'cors',
+            headers: {"Content-type": "application/json; charset=UTF-8"},
+        }).then((resp)=>resp.json())
+        .then((resp)=>{
+                actionInfo.style.color="lightgreen"
+                actionInfo.innerHTML= "autofill successful";
+                chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                  chrome.tabs.sendMessage(tabs[0].id, {type: "autofill",ans:resp}, (response)=> { 
+                    if(response.ok){
+                      actionInfo.innerText=`${resp.length} answers loaded`
+                      actionInfo.style.color='green'
+                    }else{
+                      actionInfo.innerText=`unable to deploy script`
+                      actionInfo.style.color='orange'
+                    }
+                   });
+                });
+            })
+        .catch(()=>{ 
+          actionInfo.style.color="red"
+          actionInfo.innerHTML= "connecttion error";
+        })
+    
   });
   rst.addEventListener("click", async () => {
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-      chrome.tabs.sendMessage(tabs[0].id, {type: "getCount"}, function(count) {
-          console.log("got")
-      });
-  });
+    
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
       files: ['scripts/reset.js'],
