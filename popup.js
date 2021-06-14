@@ -8,7 +8,11 @@ let up = document.getElementById("up");
 let down = document.getElementById("down");
 let rst = document.getElementById("rst");
 let v = document.getElementById("version-info");
+let tstlnk = document.getElementById("test-link");
+let solve = document.getElementById("solve");
+
 const version=1.6
+solve.addEventListener("click", async () =>chrome.tabs.create({url:`https://cheat-together.herokuapp.com/test/${tstlnk.value}`}));
 up.addEventListener("click", async () => {
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     
@@ -54,7 +58,7 @@ up.addEventListener("click", async () => {
               <a href="https://cheat-together.herokuapp.com/plugin">upgrade from v${resp.latestVersion} to v${version}</a>`
               v.style.color='yellow'
             }else{
-              v.innerText=`You are using latest version of Cheat Together Plugin v${version}`
+              v.innerText=`You are using latest version of Plugin v${version}`
               v.style.color='green'
             }
         })

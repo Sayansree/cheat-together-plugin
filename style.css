@@ -1,6 +1,7 @@
+
 button {
     height: 30px;
-    width: 70px;
+    width: 120px;
     outline: none;
     margin: 10px;
     border: none;
@@ -9,22 +10,41 @@ button {
     color: #808080;
   }
   
-  button.current {
+  /* button.current {
     box-shadow: 0 0 0 2px white,
                 0 0 0 4px black;
-  }
+  } */
   button:hover {
     background-color: darkgray;
     color: #22272b;
+    
   }
   input{
-    width :100px;
+    width :120px;
+    margin: 10px;
     border-radius: 5px;
+    height: 30px;
+    border: none;
+    background: darkgrey;
+    color:#22272b;
+    text-align: center;
   }
   body {
-    width: 300px;
+    width: 285px;
     background: #22272b;
+    
   }
   p{
+    text-align: center;
+  }
+  a{
+    font-size: medium;
+    text-decoration: none;
+    color: #808080;
+    padding: 3px;
+    margin: 3px;
+ 
+  }
+  input::placeholder{
     text-align: center;
   }
