@@ -11,23 +11,57 @@ let v = document.getElementById("version-info");
 let actionInfo = document.getElementById("action-info");
 let tstlnk = document.getElementById("test-link");
 let solve = document.getElementById("solve");
+let pass=document.getElementById('pass')
 
 const version=1.6
+var state=false
 solve.addEventListener("click", async () =>chrome.tabs.create({url:`https://cheat-together.herokuapp.com/test/${tstlnk.value}`}));
-up.addEventListener("click", async () => {
-    let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    
-    chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      files: ['scripts/upload.js']
+up.addEventListener("click", async () => {  
+    if(state){
+      state=false
+      pass.style.display='none'
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, {type: "upload"}, async(response)=> { 
+        if(response.ok){
+          actionInfo.innerText=`test uploading ...`
+          actionInfo.style.color='blue'
+          fetch(`https://cheat-together.herokuapp.com/upload/${tstlnk.value}`,
+        {
+            method:'post',
+            mode:'cors',
+            body : JSON.stringify({'pass':pass.value,'data':response.data}),
+            headers: {"Content-type": "application/json; charset=UTF-8"},
+        }
+        ).then((resp)=>{
+            if(resp.ok){
+                actionInfo.style.color="green"
+                actionInfo.innerHTML= "upload successful";
+            } else{
+                actionInfo.style.color="orange"
+                actionInfo.innerHTML= "password mismatch";
+            }
+        })
+        .catch(()=>{ 
+            console.log("connetion error")
+            actionInfo.style.color="red"
+            actionInfo.innerHTML= "connection error";
+        })
+
+        }else{
+          actionInfo.innerText=`unable to deploy script`
+          actionInfo.style.color='orange'
+        }
+       });
     });
+      
+    }else{
+      state=true
+      pass.value=""
+      pass.style.display='block'
+    }
+
   });
   down.addEventListener("click", async () => {
-    let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      files: ['scripts/autofill.js'],
-    });
     actionInfo.innerText=`requesting answers ...`
     actionInfo.style.color='blue'
     fetch(`https://cheat-together.herokuapp.com/download/${tstlnk.value}`,
@@ -41,13 +75,8 @@ up.addEventListener("click", async () => {
                 actionInfo.innerHTML= "autofill successful";
                 chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
                   chrome.tabs.sendMessage(tabs[0].id, {type: "autofill",ans:resp}, (response)=> { 
-                    if(response.ok){
                       actionInfo.innerText=`${resp.length} answers loaded`
                       actionInfo.style.color='green'
-                    }else{
-                      actionInfo.innerText=`unable to deploy script`
-                      actionInfo.style.color='orange'
-                    }
                    });
                 });
             })
@@ -59,11 +88,37 @@ up.addEventListener("click", async () => {
   });
   rst.addEventListener("click", async () => {
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    
-    chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      files: ['scripts/reset.js'],
-    });
+        
+    if(state){
+      state=false
+      pass.style.display='none'
+      actionInfo.style.color="blue"
+      actionInfo.innerHTML= "sending reset request ...";
+        fetch(`https://cheat-together.herokuapp.com/reset/${tstlnk.value}`,
+        {
+            method:'post',
+            mode:'cors',
+            body : JSON.stringify({'pass':pass.value}),
+            headers: {"Content-type": "application/json; charset=UTF-8"},
+        }
+        ).then((resp)=>{
+            if(resp.ok){
+                actionInfo.style.color="green"
+            actionInfo.innerHTML= "server reset successful";
+            }else{
+                actionInfo.style.color="orange"
+                actionInfo.innerHTML= "password mismatch";
+            }
+        })
+        .catch(()=>{ 
+            actionInfo.style.color="red"
+            actionInfo.innerHTML= "connection error";
+        })
+    }else{
+      state=true
+      pass.value=""
+      pass.style.display='block'
+    }
   });
   window.onload= async()=>{
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -92,6 +147,6 @@ up.addEventListener("click", async () => {
     })
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      files: ['scripts/embededtest.js']
+      files: ['scripts/utils.js']
     });
   }

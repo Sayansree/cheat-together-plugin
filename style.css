@@ -20,7 +20,7 @@ button {
     
   }
   input{
-    width :120px;
+    width :110px;
     margin: 10px;
     border-radius: 5px;
     height: 30px;
@@ -33,6 +33,10 @@ button {
     width: 285px;
     background: #22272b;
     
+  }
+  #pass{
+    display: none;
+    width:200px;
   }
   p{
     text-align: center;
