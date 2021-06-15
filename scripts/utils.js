@@ -10,12 +10,37 @@ if(typeof checkembeded != 'function'){
             if(typeof autofill != 'function'){
                 window.autofill= (ansOBJ) =>{
                     for( q of ansOBJ){
-                        ans = document.getElementsByName(q.qid)
-                        for( a of ans){
-                            if(a.value.replace(/ /g,"")==q.ans.replace(/ /g,"")){
-                                a.click()
-                                a.checked=true
-                                
+                        if(ansOBJ.ans){
+                            if(ansOBJ.type=='text'){
+                                document.querySelector(`input[aria-labelledby=QuestionId_${ansOBJ.qid}`).value=ansOBJ.ans
+                            }else if(ansOBJ.type=='textarea'){
+                                document.querySelector(`textarea[aria-labelledby=QuestionId_${ansOBJ.qid}`).value=ansOBJ.ans
+                            }else if(ansOBJ.type=='radio'){
+                                ans = document.getElementsByName(q.qid)
+                                for( a of ans){
+                                    if(a.value.replace(/ /g,"")==q.ans.replace(/ /g,"")){
+                                        a.click()
+                                        a.checked=true  
+                                    }
+                                }
+                            }else if(ansOBJ.type=='checkbox'){
+                                opn = document.getElementsByName(q.qid)
+                                for( a of ansOBJ.ans){
+                                    for( op of opn){
+                                        if(a.value.replace(/ /g,"")==op.replace(/ /g,"")&&){
+                                            if(!op.checked){
+                                                op.click()
+                                                op.checked=true  
+                                            }
+                                        }else{
+                                            if(op.checked){
+                                                op.click()
+                                                op.checked=false  
+                                            }
+                
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
