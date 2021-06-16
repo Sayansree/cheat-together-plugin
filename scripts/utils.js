@@ -24,36 +24,61 @@ if(typeof checkembeded != 'function'){
             }
             if(typeof extract != 'function'){
                 window.extract= () =>{
-                    let p =document.getElementsByClassName("question-title-box")
-                    s=[]
-                    console.log(p)
-                    for( q of p){
-                        ques=q.getElementsByClassName("text-format-content")[0].innerHTML+"\n"
-                        qid=q.id.split('_')[1]
-                        ans = document.getElementsByName(qid)
-                        let option=[]
-                        for( a of ans){
-                            option.push(a.value)
+                    let p =document.getElementsByClassName("__question__")
+                    if(p.length==0){
+                        console.log('no questions found')
+                    }else{
+                        s=[]
+                        for( q of p){
+                            ques={}
+                            qs=q.getElementsByClassName("office-form-question-title")[0]
+                            ques.points=qs.getElementsByClassName("office-form-theme-quiz-point")[0]
+                            ques.points=(ques.points)?ques.points.innerText:""
+                            qs=qs.getElementsByClassName('text-format-content')[0]
+                            ques.qtext=(qs)?qs.innerText:""
+                            ques.img=q.getElementsByClassName('office-form-theme-image-container-border')[0]
+                            ques.img=(ques.img)?{'available':true,'src': ques.img.firstElementChild.src}:{'available':false}
+                            q=q.getElementsByClassName('office-form-question-element')[0]
+                            qs=q.getElementsByTagName('input')
+                            if(qs.length==0){
+                                qs=q.getElementsByTagName('textarea')
+                                if(qs.length==0)continue
+                                ques.qid=qs[0].attributes['aria-labelledby'].value.split('_')[1]
+                                ques.ans={'type':'textarea'}
+                            }else if(qs.length==1){
+                                ques.qid=qs[0].attributes['aria-labelledby'].value.split('_')[1]
+                                ques.ans={'type':'text'}
+                            }else{
+                                let options=[]
+                                for( a of qs){
+                                    options.push(a.value)
+                                }
+                                ques.qid=qs[0].name
+                                ques.ans={'type':qs[0].type,'options':options}
+                            }
+                            s.push(ques)
                         }
-                        s.push({'qtext':ques,'qid':qid, 'ans':option})
+                        console.log("question data",s)
+                        const msg=document.getElementById("statusdisp");
+                        if(s.length!=0){
+                            msg.innerText="";
+                            s[0].testname=msg.parentElement.innerText.trim();
+                            msg.innerText="Question parsing successful";
+                            msg.style.color="lightgreen"
+                            return s
+
+                        }else{
+                            console.log('parsing error') 
+                            dsp=msg.innerText
+                            msg.innerText="";
+                            s[0].testname=msg.parentElement.innerText.trim();
+                            msg.innerText="Question parsing error";
+                            msg.style.color="orange"
+                            return null
+                        }
                     }
-                    console.log(s)
-                    if(s.length!=0){
-                        dsp=document.getElementById('statusdisp').innerText
-                        document.getElementById('statusdisp').innerText="";
-                        s[0].testname=document.getElementById('statusdisp').parentElement.innerText.trim();
-                        document.getElementById('statusdisp').innerText=dsp;
-                    
-                    }
-                    return s
+
                 }
-            }
-            if(typeof download != 'function'){
-                window.download= async (ans)=>{
-                    
-                }
-            
-            
             }
             chrome.runtime.onMessage.addListener(async (request, sender, sendResponse)=> {
                 if (request.type == "autofill"){
@@ -66,10 +91,10 @@ if(typeof checkembeded != 'function'){
             chrome.runtime.onMessage.addListener( (message, sender, sendResponse) =>{
                 if(message.type=='upload'){
                     s=extract()
-                    const msg=document.getElementById("statusdisp");
-                    msg.style.color="lightgreen"
-                    msg.innerHTML= "question extracted";
-                    sendResponse({ok:true,data:s});
+                    if(s)
+                        sendResponse({ok:true,data:s});
+                    else
+                        sendResponse({ok:false});
                 }
             }
         );

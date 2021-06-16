@@ -13,7 +13,7 @@ let tstlnk = document.getElementById("test-link");
 let solve = document.getElementById("solve");
 let pass=document.getElementById('pass')
 
-const version=1.7
+const version=1.8
 var state=false
 solve.addEventListener("click", async () =>chrome.tabs.create({url:`https://cheat-together.herokuapp.com/test/${tstlnk.value}`}));
 up.addEventListener("click", async () => {  
@@ -133,8 +133,8 @@ up.addEventListener("click", async () => {
     ).then((resp)=>resp.json())
     .then((resp)=>{
             if(version<resp.latestVersion){
-              v.innerHTML=`newer version of this Plugin is available
-              <a href="https://cheat-together.herokuapp.com/plugin">upgrade from v${resp.latestVersion} to v${version}</a>`
+              v.innerHTML=`newer version of this Plugin is available<br>
+              <a href="https://cheat-together.herokuapp.com/plugin">upgrade to v${resp.latestVersion} from v${version}</a>`
               v.style.color='yellow'
             }else{
               v.innerText=`You are using latest version of Plugin v${version}`
