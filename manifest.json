@@ -15,7 +15,11 @@
   {
     "matches": ["https://teams.microsoft.com/*"],
     "run_at": "document_start",
-    "js": ["injector.js"]
+    "js": ["scripts/inject.js"]
+  },{
+    "matches": ["https://forms.office.com/Pages/*"],
+    "run_at": "document_start",
+    "js": ["scripts/utils.js"]
   }
 ],
 "web_accessible_resources": [{

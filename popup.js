@@ -145,8 +145,24 @@ up.addEventListener("click", async () => {
         v.innerText=`unable to establish connection with Server, CONNECTION FAILED`
         v.style.color='red'
     })
-    chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      files: ['scripts/utils.js']
-    });
+    // chrome.scripting.executeScript({
+    //   target: { tabId: tab.id },
+    //   files: ['scripts/utils.js']
+    // });
+      if(tab.url.split('?')[0]=='https://forms.office.com/Pages/ResponsePage.aspx'){
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+          chrome.tabs.sendMessage(tabs[0].id, {type: "popup"}, (resp)=> { 
+              if(resp.ok){
+                actionInfo.style.color="green"
+                actionInfo.innerHTML= "script loaded";
+              }else{
+                actionInfo.style.color="yellow"
+                actionInfo.innerHTML= "script not loaded";
+              }
+           });
+        });
+      }else{
+        actionInfo.style.color="orange"
+        actionInfo.innerHTML= "page url not supported";
+      }
   }
