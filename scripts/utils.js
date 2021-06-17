@@ -14,7 +14,7 @@ if(window.location.href.split('?')[0]=='https://forms.office.com/Pages/ResponseP
                     }else if(q.type=='textarea'){
                         document.querySelector(`textarea[aria-labelledby=QuestionId_${q.qid}`).value=q.ans
                     }else if(q.type=='radio'){
-                        ans = document.getElementsByName(q.qid)
+                        ans = document.querySelectorAll(`input[type="radio"][name="${q.qid}"]`)
                         for( a of ans){
                             if(a.value.replace(/ /g,"")==q.ans.replace(/ /g,"")){
                                 a.click()
@@ -22,21 +22,19 @@ if(window.location.href.split('?')[0]=='https://forms.office.com/Pages/ResponseP
                             }
                         }
                     }else if(q.type=='checkbox'){
-                        opn = document.getElementsByName(q.qid)
-                        for( a of q.ans){
-                            for( op of opn){
-                                if(a.value.replace(/ /g,"")==op.replace(/ /g,"")){
-                                    if(!op.checked){
-                                        op.click()
-                                        op.checked=true  
-                                    }
-                                }else{
-                                    if(op.checked){
-                                        op.click()
-                                        op.checked=false  
-                                    }
-        
+                        opn = document.querySelectorAll(`input[type="checkbox"][name="${q.qid}"]`)
+                        for( op of opn){
+                            if(q.ans.find((v)=>v.replace(/ /g,"")==op.value.replace(/ /g,""))){
+                                if(!op.checked){
+                                    op.click()
+                                    op.checked=true  
                                 }
+                            }else{
+                                if(op.checked){
+                                    op.click()
+                                    op.checked=false  
+                                }
+    
                             }
                         }
                     }
