@@ -13,7 +13,8 @@ let tstlnk = document.getElementById("test-link");
 let solve = document.getElementById("solve");
 let pass=document.getElementById('pass')
 
-const version=1.8
+const version='1.9'
+const supportURL='https://forms.office.com/Pages/ResponsePage.aspx'
 var state=false
 solve.addEventListener("click", async () =>chrome.tabs.create({url:`https://cheat-together.herokuapp.com/test/${tstlnk.value}`}));
 up.addEventListener("click", async () => {  
@@ -132,9 +133,9 @@ up.addEventListener("click", async () => {
     }
     ).then((resp)=>resp.json())
     .then((resp)=>{
-            if(version<resp.latestVersion){
+            if(versionCompare(version,resp.latestVersion)==-1){
               v.innerHTML=`newer version of this Plugin is available<br>
-              <a href="https://cheat-together.herokuapp.com/plugin">upgrade to v${resp.latestVersion} from v${version}</a>`
+              <a href="https://cheat-together.herokuapp.com/plugin">upgrade from v${version} to v${resp.latestVersion}</a>`
               v.style.color='yellow'
             }else{
               v.innerText=`You are using latest version of Plugin v${version}`
@@ -149,7 +150,7 @@ up.addEventListener("click", async () => {
     //   target: { tabId: tab.id },
     //   files: ['scripts/utils.js']
     // });
-      if(tab.url.split('?')[0]=='https://forms.office.com/Pages/ResponsePage.aspx'){
+      if(tab.url.split('?')[0]==supportURL){
         down.disabled=false
         up.disabled=false
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
@@ -168,3 +169,49 @@ up.addEventListener("click", async () => {
         actionInfo.innerHTML= "page url not supported";
       }
   }
+  function versionCompare(v1, v2, options) {
+    var lexicographical = options && options.lexicographical,
+        zeroExtend = options && options.zeroExtend,
+        v1parts = v1.split('.'),
+        v2parts = v2.split('.');
+
+    function isValidPart(x) {
+        return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
+    }
+
+    if (!v1parts.every(isValidPart) || !v2parts.every(isValidPart)) {
+        return NaN;
+    }
+
+    if (zeroExtend) {
+        while (v1parts.length < v2parts.length) v1parts.push("0");
+        while (v2parts.length < v1parts.length) v2parts.push("0");
+    }
+
+    if (!lexicographical) {
+        v1parts = v1parts.map(Number);
+        v2parts = v2parts.map(Number);
+    }
+
+    for (var i = 0; i < v1parts.length; ++i) {
+        if (v2parts.length == i) {
+            return 1;
+        }
+
+        if (v1parts[i] == v2parts[i]) {
+            continue;
+        }
+        else if (v1parts[i] > v2parts[i]) {
+            return 1;
+        }
+        else {
+            return -1;
+        }
+    }
+
+    if (v1parts.length != v2parts.length) {
+        return -1;
+    }
+
+    return 0;
+}
