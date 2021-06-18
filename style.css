@@ -19,6 +19,11 @@ button {
     color: #22272b;
     
   }
+  button:disabled {
+    background-color:#32373b;
+    color: #22272b;
+    
+  }
   input{
     width :110px;
     margin: 10px;

@@ -56,6 +56,9 @@ if(window.location.href.split('?')[0]=='https://forms.office.com/Pages/ResponseP
                 for( q of p){
                     ques={}
                     qs=q.getElementsByClassName("office-form-question-title")[0]
+                    qmath=(q.getElementsByClassName('question-title-container')[0]||q.getElementsByClassName('question-title-box')[0])
+                    qmath=qmath.getElementsByTagName('script')[0]
+                    ques.math=(qmath)?`$$${qmath.innerText}$$`:""
                     ques.points=qs.getElementsByClassName("office-form-theme-quiz-point")[0]
                     ques.points=(ques.points)?ques.points.innerText:""
                     qs=qs.getElementsByClassName('text-format-content')[0]
@@ -75,7 +78,8 @@ if(window.location.href.split('?')[0]=='https://forms.office.com/Pages/ResponseP
                     }else{
                         let options=[]
                         for( a of qs){
-                            options.push(a.value)
+                            math=a.nextSibling.getElementsByTagName('script')[0]
+                            options.push({val:a.value,math:math!=null})
                         }
                         ques.qid=qs[0].name
                         ques.ans={'type':qs[0].type,'options':options}

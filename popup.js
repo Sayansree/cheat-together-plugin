@@ -150,6 +150,8 @@ up.addEventListener("click", async () => {
     //   files: ['scripts/utils.js']
     // });
       if(tab.url.split('?')[0]=='https://forms.office.com/Pages/ResponsePage.aspx'){
+        down.disabled=false
+        up.disabled=false
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
           chrome.tabs.sendMessage(tabs[0].id, {type: "popup"}, (resp)=> { 
               if(resp.ok){
