@@ -9,6 +9,7 @@ let down = document.getElementById("down");
 let rst = document.getElementById("rst");
 let v = document.getElementById("version-info");
 let actionInfo = document.getElementById("action-info");
+let actionInfo2 = document.getElementById("action-info2");
 let tstlnk = document.getElementById("test-link");
 let solve = document.getElementById("solve");
 let pass=document.getElementById('pass')
@@ -150,6 +151,16 @@ up.addEventListener("click", async () => {
     //   target: { tabId: tab.id },
     //   files: ['scripts/utils.js']
     // });
+    chrome.runtime.sendMessage({type: "wakeup"},(response)=> {
+            if(response.ok){
+              actionInfo2.style.color="green"
+              actionInfo2.innerHTML= "auto test launcher running";
+            }else{
+                actionInfo2.style.color="orange"
+                actionInfo2.innerHTML= "auto test launcher failed";
+            }
+        });
+        ////
       if(tab.url.split('?')[0]==supportURL){
         down.disabled=false
         up.disabled=false

@@ -43,3 +43,11 @@ const sniffer = ()=> {
 
 }
 sniffer()
+
+chrome.runtime.onMessage.addListener( (request,sender,sendResponse)=>
+{
+    if( request.type === "wakeup" )
+    {
+            sendResponse( {ok:true} );       
+    }
+})
