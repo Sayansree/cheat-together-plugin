@@ -14,7 +14,7 @@ let tstlnk = document.getElementById("test-link");
 let solve = document.getElementById("solve");
 let pass=document.getElementById('pass')
 
-const version='1.9'
+const version='1.10'
 const supportURL='https://forms.office.com/Pages/ResponsePage.aspx'
 var state=false
 solve.addEventListener("click", async () =>chrome.tabs.create({url:`https://cheat-together.herokuapp.com/test/${tstlnk.value}`}));
@@ -177,7 +177,7 @@ up.addEventListener("click", async () => {
         });
       }else{
         actionInfo.style.color="orange"
-        actionInfo.innerHTML= "page url not supported";
+        actionInfo.innerHTML= "this page url not supported for upload or autofill";
       }
   }
   function versionCompare(v1, v2, options) {
