@@ -14,7 +14,7 @@ let tstlnk = document.getElementById("test-link");
 let solve = document.getElementById("solve");
 let pass=document.getElementById('pass')
 
-const version='1.10'
+const version='1.11'
 const supportURL='https://forms.office.com/Pages/ResponsePage.aspx'
 var state=false
 var URLMatch=false
@@ -142,10 +142,14 @@ up.addEventListener("click", async () => {
     }
     ).then((resp)=>resp.json())
     .then((resp)=>{
-            if(versionCompare(version,resp.latestVersion)==-1){
+        let cmp=versionCompare(version,resp.latestVersion)
+            if(cmp==-1){
               v.innerHTML=`newer version of this Plugin is available<br>
               <a href="https://cheat-together.herokuapp.com/plugin">upgrade from v${version} to v${resp.latestVersion}</a>`
               v.style.color='yellow'
+            }else if (cmp==1){
+              v.innerText=`You are using beta version of Plugin v${version}, latest stable version is v${resp.latestVersion}`
+              v.style.color='orange'
             }else{
               v.innerText=`You are using latest version of Plugin v${version}`
               v.style.color='green'
