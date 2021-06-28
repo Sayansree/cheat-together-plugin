@@ -17,6 +17,14 @@ let pass=document.getElementById('pass')
 const version='1.10'
 const supportURL='https://forms.office.com/Pages/ResponsePage.aspx'
 var state=false
+var URLMatch=false
+tstlnk.addEventListener("change",()=>{
+  if(tstlnk.value!=""&& URLMatch)
+  {
+    down.disabled=false
+    up.disabled=false
+  }
+})
 solve.addEventListener("click", async () =>chrome.tabs.create({url:`https://cheat-together.herokuapp.com/test/${tstlnk.value}`}));
 up.addEventListener("click", async () => {  
     if(state){
@@ -163,8 +171,7 @@ up.addEventListener("click", async () => {
         });
         ////
       if(tab.url.split('?')[0]==supportURL){
-        down.disabled=false
-        up.disabled=false
+          URLMatch=true
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
           chrome.tabs.sendMessage(tabs[0].id, {type: "popup"}, (resp)=> { 
               if(resp.ok){
@@ -185,8 +192,10 @@ up.addEventListener("click", async () => {
     tstlnk.innerHTML=""
     if(resp.length==0){
       tstlnk.innerHTML=`<option disabled selected value= "">No Live Servers</option>`
+      
     }else{
       tstlnk.innerHTML=`<option disabled selected value= "">${resp.length} Live Servers</option>`
+      rst.disabled=false
     }
     for (i of resp){
         let item=document.createElement('option')
