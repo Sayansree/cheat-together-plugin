@@ -142,6 +142,7 @@ up.addEventListener("click", async () => {
               v.innerText=`You are using latest version of Plugin v${version}`
               v.style.color='green'
             }
+            loadServers(resp.tests)
         })
     .catch(()=>{ 
         v.innerText=`unable to establish connection with Server, CONNECTION FAILED`
@@ -179,6 +180,20 @@ up.addEventListener("click", async () => {
         actionInfo.style.color="orange"
         actionInfo.innerHTML= "this page url not supported for upload or autofill";
       }
+  }
+  const loadServers = (resp)=>{
+    tstlnk.innerHTML=""
+    if(resp.length==0){
+      tstlnk.innerHTML=`<option disabled selected value= "">No Live Servers</option>`
+    }else{
+      tstlnk.innerHTML=`<option disabled selected value= "">${resp.length} Live Servers</option>`
+    }
+    for (i of resp){
+        let item=document.createElement('option')
+        item.innerText=i
+        item.value=i
+        tstlnk.appendChild(item)
+    }
   }
   function versionCompare(v1, v2, options) {
     var lexicographical = options && options.lexicographical,

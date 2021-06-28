@@ -24,6 +24,7 @@ button {
     color: #22272b;
     
   }
+
   input{
     width :110px;
     margin: 10px;
@@ -34,6 +35,21 @@ button {
     color:#22272b;
     text-align: center;
   }
+  select{
+    width :110px;
+    margin: 10px;
+    border-radius: 5px;
+    height: 30px;
+    border: none;
+    background: darkgrey;
+    color:#22272b;
+    text-align: center;
+  }
+  /* option:hover{
+    background-color: darkgray;
+    color: #22272b;
+  } */
+
   body {
     width: 285px;
     background: #22272b;
