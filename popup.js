@@ -14,7 +14,7 @@ let tstlnk = document.getElementById("test-link");
 let solve = document.getElementById("solve");
 let pass=document.getElementById('pass')
 
-const version='1.11'
+const version='1.12'
 const supportURL='https://forms.office.com/Pages/ResponsePage.aspx'
 var state=false
 var URLMatch=false

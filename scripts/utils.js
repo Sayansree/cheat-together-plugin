@@ -91,6 +91,7 @@ if(window.location.href.split('?')[0]=='https://forms.office.com/Pages/ResponseP
                 if(s.length!=0){
                     msg.innerText="";
                     s[0].testname=msg.parentElement.innerText.trim();
+                    s[0].testurl=window.location.href
                     msg.innerText="Question parsing successful";
                     msg.style.color="lightgreen"
                     return s

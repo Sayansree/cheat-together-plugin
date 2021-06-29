@@ -1,8 +1,8 @@
 
 {"manifest_version": 3,
 "name": "Cheat Together",
-"version": "1.11",
-"description": "Enables to colaboratively fill answers",
+"version": "1.12",
+"description": "Enables to clone a test and colaboratively solve and fill answers and autofill the original test",
 "permissions": [
     "contextMenus",
     "tabs","storage", "activeTab", "scripting",
