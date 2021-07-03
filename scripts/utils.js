@@ -7,12 +7,15 @@
 if(window.location.href.split('?')[0]=='https://forms.office.com/Pages/ResponsePage.aspx'){
     if(typeof autofill != 'function'){
         window.autofill= (ansOBJ) =>{
+            ctr=0
             for( q of ansOBJ){
                 if(q.ans){
                     if(q.type=='text'){
-                        document.querySelector(`input[aria-labelledby=QuestionId_${q.qid}`).value=q.ans
+                        document.querySelector(`input[aria-labelledby=QuestionId_${q.qid}]`).value=q.ans
+                        if(q.ans!="")ctr++
                     }else if(q.type=='textarea'){
-                        document.querySelector(`textarea[aria-labelledby=QuestionId_${q.qid}`).value=q.ans
+                        document.querySelector(`textarea[aria-labelledby=QuestionId_${q.qid}]`).value=q.ans
+                        if(q.ans!="")ctr++
                     }else if(q.type=='radio'){
                         ans = document.querySelectorAll(`input[type="radio"][name="${q.qid}"]`)
                         for( a of ans){
@@ -21,6 +24,7 @@ if(window.location.href.split('?')[0]=='https://forms.office.com/Pages/ResponseP
                                 a.checked=true  
                             }
                         }
+                        if(q.ans!="")ctr++
                     }else if(q.type=='checkbox'){
                         opn = document.querySelectorAll(`input[type="checkbox"][name="${q.qid}"]`)
                         for( op of opn){
@@ -37,13 +41,15 @@ if(window.location.href.split('?')[0]=='https://forms.office.com/Pages/ResponseP
     
                             }
                         }
+                        if(q.ans.length!=0)ctr++
                     }
                 }
             }
             console.log("autofillSuccessful",ansOBJ)
             const msg=document.getElementById("statusdisp");
             msg.style.color="lightgreen"
-            msg.innerHTML= `autofill successful! ${ansOBJ.length} answers filled`;
+            msg.innerHTML= `autofill successful! ${ctr}/${ansOBJ.length} answers filled`;
+            return ctr;
         }
     }
     if(typeof extract != 'function'){
@@ -126,7 +132,7 @@ if(window.location.href.split('?')[0]=='https://forms.office.com/Pages/ResponseP
     }
     chrome.runtime.onMessage.addListener(async (request, sender, sendResponse)=> {
         switch (request.type){
-            case "autofill":    autofill(request.ans)
+            case "autofill":    sendResponse({num:autofill(request.ans)})
                                 break;
             case "upload":      s=extract()
                                 if(s)

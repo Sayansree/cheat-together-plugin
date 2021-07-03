@@ -14,7 +14,7 @@ let tstlnk = document.getElementById("test-link");
 let solve = document.getElementById("solve");
 let pass=document.getElementById('pass')
 
-const version='1.12'
+const version='1.13'
 const supportURL='https://forms.office.com/Pages/ResponsePage.aspx'
 var state=false
 var URLMatch=false
@@ -24,6 +24,7 @@ tstlnk.addEventListener("change",()=>{
     down.disabled=false
     up.disabled=false
   }
+  rst.disabled=false
 })
 solve.addEventListener("click", async () =>chrome.tabs.create({url:`https://cheat-together.herokuapp.com/test/${tstlnk.value}`}));
 up.addEventListener("click", async () => {  
@@ -85,7 +86,7 @@ up.addEventListener("click", async () => {
                 actionInfo.innerHTML= "autofill successful";
                 chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
                   chrome.tabs.sendMessage(tabs[0].id, {type: "autofill",ans:resp}, (response)=> { 
-                      actionInfo.innerText=`${resp.length} answers loaded`
+                      actionInfo.innerText=`${response.num}/${resp.length} answers loaded`
                       actionInfo.style.color='green'
                    });
                 });
@@ -199,7 +200,6 @@ up.addEventListener("click", async () => {
       
     }else{
       tstlnk.innerHTML=`<option disabled selected value= "">${resp.length} Live Servers</option>`
-      rst.disabled=false
     }
     for (i of resp){
         let item=document.createElement('option')
