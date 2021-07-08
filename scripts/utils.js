@@ -11,10 +11,14 @@ if(window.location.href.split('?')[0]=='https://forms.office.com/Pages/ResponseP
             for( q of ansOBJ){
                 if(q.ans){
                     if(q.type=='text'){
-                        document.querySelector(`input[aria-labelledby=QuestionId_${q.qid}]`).value=q.ans
+                        let tb=document.querySelector(`input[aria-labelledby=QuestionId_${q.qid}]`)
+                        tb.value=q.ans
+                        tb.dispatchEvent(new Event("input"))
                         if(q.ans!="")ctr++
                     }else if(q.type=='textarea'){
-                        document.querySelector(`textarea[aria-labelledby=QuestionId_${q.qid}]`).value=q.ans
+                        let tb=document.querySelector(`textarea[aria-labelledby=QuestionId_${q.qid}]`)
+                        tb.value=q.ans
+                        tb.dispatchEvent(new Event("input"))
                         if(q.ans!="")ctr++
                     }else if(q.type=='radio'){
                         ans = document.querySelectorAll(`input[type="radio"][name="${q.qid}"]`)
