@@ -15,7 +15,7 @@ let solve = document.getElementById("solve");
 let pass=document.getElementById('pass')
 
 const version='1.13'
-const supportURL='https://forms.office.com/Pages/ResponsePage.aspx'
+const supportURL='https://forms.office.com/pages/responsepage.aspx'
 var state=false
 var URLMatch=false
 tstlnk.addEventListener("change",()=>{
@@ -175,7 +175,7 @@ up.addEventListener("click", async () => {
             }
         });
         ////
-      if(tab.url.split('?')[0]==supportURL){
+      if(tab.url.split('?')[0].toLowerCase() ==supportURL){
           URLMatch=true
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
           chrome.tabs.sendMessage(tabs[0].id, {type: "popup"}, (resp)=> { 

@@ -17,7 +17,7 @@
     "run_at": "document_start",
     "js": ["scripts/inject.js"]
   },{
-    "matches": ["https://forms.office.com/Pages/*"],
+    "matches": ["https://forms.office.com/Pages/*","https://forms.office.com/pages/*"],
     "run_at": "document_start",
     "js": ["scripts/utils.js"]
   }

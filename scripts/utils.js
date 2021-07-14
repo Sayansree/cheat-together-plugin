@@ -4,7 +4,7 @@
  * email sayansreeparia@gmail.com
  * 
  */
-if(window.location.href.split('?')[0]=='https://forms.office.com/Pages/ResponsePage.aspx'){
+if(window.location.href.split('?')[0].toLowerCase()=='https://forms.office.com/pages/responsepage.aspx'){
     if(typeof autofill != 'function'){
         window.autofill= (ansOBJ) =>{
             ctr=0
