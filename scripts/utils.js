@@ -80,10 +80,10 @@ if(window.location.href.split('?')[0].toLowerCase()=='https://forms.office.com/p
                     if(qs.length==0){
                         qs=q.getElementsByTagName('textarea')
                         if(qs.length==0)continue
-                        ques.qid=qs[0].attributes['aria-labelledby'].value.split('_')[1]
+                        ques.qid=qs[0].attributes['aria-labelledby'].value.split(' ')[0].split('_')[1]
                         ques.ans={'type':'textarea'}
                     }else if(qs.length==1){
-                        ques.qid=qs[0].attributes['aria-labelledby'].value.split('_')[1]
+                        ques.qid=qs[0].attributes['aria-labelledby'].value.split(' ')[0].split('_')[1]
                         ques.ans={'type':'text'}
                     }else{
                         let options=[]
