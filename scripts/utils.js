@@ -11,12 +11,12 @@ if(window.location.href.split('?')[0].toLowerCase()=='https://forms.office.com/p
             for( q of ansOBJ){
                 if(q.ans){
                     if(q.type=='text'){
-                        let tb=document.querySelector(`input[aria-labelledby=QuestionId_${q.qid}]`)
+                        let tb=document.querySelector(`input[aria-labelledby="QuestionId_${q.qid} QuestionInfo_${q.qid}"]`)
                         tb.value=q.ans
                         tb.dispatchEvent(new Event("input"))
                         if(q.ans!="")ctr++
                     }else if(q.type=='textarea'){
-                        let tb=document.querySelector(`textarea[aria-labelledby=QuestionId_${q.qid}]`)
+                        let tb=document.querySelector(`textarea[aria-labelledby="QuestionId_${q.qid} QuestionInfo_${q.qid}"]`)
                         tb.value=q.ans
                         tb.dispatchEvent(new Event("input"))
                         if(q.ans!="")ctr++
